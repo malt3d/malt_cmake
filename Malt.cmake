@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.5)
+cmake_minimum_required(VERSION 3.2)
 
 function(malt_def_module module_name)
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/module.json ${CMAKE_BINARY_DIR}/module.json COPYONLY)
