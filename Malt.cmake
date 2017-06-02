@@ -1,15 +1,30 @@
 cmake_minimum_required(VERSION 3.2)
 
+if (MSVC OR MINGW OR WIN32)
+    set(MALT_LIB_TYPE "STATIC")
+else()
+    set(MALT_LIB_TYPE "SHARED")
+endif()
+
 function(malt_def_module module_name)
+    if (MSVC OR MINGW OR WIN32)
+        target_compile_definitions(${module_name} PUBLIC MALT_STATIC_LIBS=1)
+    endif()
     configure_file(${CMAKE_CURRENT_SOURCE_DIR}/module.json ${CMAKE_BINARY_DIR}/module.json COPYONLY)
 endfunction()
 
+function(malt_def_game target)
+    if (MSVC OR MINGW OR WIN32)
+        target_compile_definitions(${target} PUBLIC MALT_STATIC_LIBS=1)
+    endif()
+endfunction()
+
 function(malt_init)
-    add_custom_target(
-        init_build
-        COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/../malt_tool/build_init.py
-    )
-    add_dependencies(malt_game init_build)
+    #add_custom_target(
+    #    init_build
+    #    COMMAND python3 ${CMAKE_CURRENT_SOURCE_DIR}/../malt_tool/build_init.py
+    #)
+    #add_dependencies(malt_game init_build)
 endfunction()
 
 function(malt_add_module to module_name)
